@@ -1,0 +1,23 @@
+{
+  "name": "@jeb/jsx",
+  "version": "0.0.20250216",
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@jeb/jsx",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "imports": {
+    "@jeb/jsx": "./src/mod.tsx",
+    "@jeb/jsx/jsx-runtime": "./src/jsx-runtime.tsx",
+    "@jeb/jsx/jsx-dev-runtime": "./src/jsx-runtime.tsx"
+  },
+  "exports": {
+    ".": "./src/jsx-mod.tsx",
+    "./jsx-runtime": "./src/jsx-runtime.tsx",
+    "./jsx-dev-runtime": "./src/jsx-runtime.tsx"
+  }
+}
