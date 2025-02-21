@@ -1,5 +1,7 @@
 import { unimplemented } from "jsr:@std/assert/unimplemented";
 
+export const Fragment = (_props: unknown) => {};
+
 export class DomNode {
   constructor(
     readonly name: string,
