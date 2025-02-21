@@ -43,22 +43,18 @@ export namespace JSX {
   type _ElementChildrenAttribute = "default";
 }
 
-export function jsx<
-  Prop extends Record<string | symbol, unknown>,
-  Component extends string | ((prop: Prop) => string),
->(
-  type: Component,
-  props: Prop,
+export function jsx(
+  type: string | ((prop: Record<string | symbol, unknown>) => string),
+  props: Record<string | symbol, unknown>,
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
   _self?: unknown,
-) {
+): Jsx {
   if (typeof type === "function") {
     return type(props);
   } else {
     return `<${type} />`;
-    unimplemented();
   }
 }
 

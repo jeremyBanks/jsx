@@ -1,9 +1,19 @@
 export interface JsxStringOpts {
   indent?: string;
-  existingIndent?: string;
+  previousIndent?: string;
+  previousComponents?: Array<string | ((prop: unknown) => unknown)>;
 }
 
-export interface Jsx {
-  jsx: number;
-  toString(opts?: JsxStringOpts): string;
+class Jsx {
+  constructor(
+    readonly type: string | undefined,
+    readonly attributes: Readonly<Record<string, string | true>>,
+    readonly children: ReadonlyArray<Jsx | string>,
+  ) {}
+
+  toString(opts?: JsxStringOpts): string {
+    return `<p>`;
+  }
 }
+
+export type { Jsx };
