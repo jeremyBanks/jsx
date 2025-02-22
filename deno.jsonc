@@ -1,6 +1,11 @@
 {
   "name": "@jeb/jsx",
   "version": "0.0.20250216",
+  "tasks": {
+    "test": {
+      "cmd": ["deno", "test"]
+    }
+  },
   "compilerOptions": {
     "exactOptionalPropertyTypes": true,
     "jsx": "react-jsx",
