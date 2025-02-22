@@ -5,7 +5,7 @@ export interface ElementStringOpts {
   previousIndent?: string;
   previousComponents?: Array<string | ((prop: unknown) => unknown)>;
   rootAttributes?: Readonly<Record<string, string | true>>;
-  grammar?: "html" | "xml";
+  grammar?: "html" | "xml" | "unknown" | undefined;
 }
 
 export class Element {
@@ -119,17 +119,35 @@ export class Element {
       }
     }
 
-    if (
-      VOID_ELEMENTS.includes(this.type.toLowerCase()) &&
-      !tagContents
-    ) {
-      closingTag = "";
+    if (!tagContents) {
+      if (opts?.grammar === "xml") {
+        // XXX: This should also apply for the pseudo-xml grammar
+        // used by forign elements in HTML, i.e. descendants of
+        // svg or math elements.
+        // Similarly for the ]]> escape in our textAsTextNode function.
+        openingTag = openingTag.slice(0, -1) + "/>";
+        closingTag = "";
+      } else if (VOID_HTML_ELEMENTS.includes(this.type)) {
+        closingTag = "";
+      }
     }
 
     return openingTag + tagContents + closingTag;
   }
 
-  toResponse(opts: ResponseInit & ElementStringOpts = {}): Response {
+  toDocument(
+    opts: ElementStringOpts = {},
+  ): { body: string; contentType: string } {
+    opts = {
+      ...opts ?? {},
+      grammar: opts.grammar ??
+        (this.type === "html"
+          ? "html"
+          : this.type === "svg"
+          ? "xml"
+          : undefined),
+    };
+
     let root: string;
     let body: string;
     let contentType: string;
@@ -147,24 +165,30 @@ export class Element {
       body = `<?xml version="1.0" encoding="UTF-8"?>${root}`;
       contentType = "image/svg+xml";
     } else {
-      body = this.toString();
+      body = this.toString({
+        grammar: "unknown",
+      });
       contentType = "text/plain";
     }
+
+    return { body, contentType };
+  }
+
+  toResponse(opts: ResponseInit & ElementStringOpts = {}): Response {
+    const { body, contentType } = this.toDocument(opts);
 
     return new Response(body, {
       status: 200,
       ...opts,
-      ...{
-        headers: {
-          "content-type": contentType,
-          ...opts.headers ?? {},
-        },
+      headers: {
+        "content-type": contentType,
+        ...opts.headers ?? {},
       },
     });
   }
 }
 
-const VOID_ELEMENTS = [
+const VOID_HTML_ELEMENTS = [
   "area",
   "base",
   "br",
