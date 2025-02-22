@@ -27,27 +27,27 @@ Deno.test(function test() {
       <a href="/">Hello, world!</a>
     </p>
   );
+  assertEquals(
+    (
+      <>
+        <P n={2}>
+          hello world
+        </P>
 
-  const ourP = (
-    <>
-      <P n={2}>
-        hello world
-      </P>
+        <P n={3}>
+          {[2, 3, 4]}
 
-      <P n={3}>
-        {[2, 3, 4]}
+          <b s="string">test</b>
+        </P>
 
-        <b s="string">test</b>
-      </P>
+        <P n={5}></P>
 
-      <P n={5}></P>
-
-      <P n={6}>
-        <P n={7}>a</P>
-        <P n={8}>b</P>
-      </P>
-    </>
+        <P n={6}>
+          <P n={7}>a</P>
+          <P n={8}>b</P>
+        </P>
+      </>
+    ).toString(),
+    "<p>hello world</p><p>234<b s=string>test</b></p><p></p><p><p>a</p><p>b</p></p>",
   );
-
-  assertEquals(ourP.toString(), "<b>hello, world!</b>");
 });
