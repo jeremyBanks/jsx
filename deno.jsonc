@@ -1,11 +1,6 @@
 {
   "name": "@jeb/jsx",
   "version": "0.0.20250216",
-  "tasks": {
-    "test": {
-      "cmd": ["deno", "test"]
-    }
-  },
   "compilerOptions": {
     "exactOptionalPropertyTypes": true,
     "jsx": "react-jsx",
@@ -24,5 +19,17 @@
     ".": "./src/jsx-mod.tsx",
     "./jsx-runtime": "./src/impl-jsx.ts",
     "./jsx-dev-runtime": "./src/impl-jsx.ts"
+  },
+  "tasks": {
+    "test": "deno test",
+    "deployctl": "deno run -A jsr:@deno/deployctl"
+  },
+  "deploy": {
+    "project": "cb8fd3c5-b073-45c4-b078-83ff24d07635",
+    "include": [
+      "./src",
+      "./deno.*"
+    ],
+    "entrypoint": "src/example.tsx"
   }
 }
