@@ -1,8 +1,8 @@
 import { assertEquals } from "jsr:@std/assert";
-import { Jsx } from "@jeb/jsx";
+import { JsxElement } from "@jeb/jsx";
 
 const P = ({ children }: {
-  children?: Jsx;
+  children?: 2;
   n: number;
 }) => {
   return <p>{children}</p>;
@@ -22,6 +22,8 @@ Deno.test(function test() {
       null={null}
       undefined={undefined}
     >
+      {2}
+      {{ this: "is not type-checked I guess?" }}
       <a href="/">Hello, world!</a>
     </p>
   );
@@ -35,7 +37,7 @@ Deno.test(function test() {
       <P n={3}>
         {[2, 3, 4]}
 
-        <b>test</b>
+        <b s="string">test</b>
       </P>
 
       <P n={5}></P>

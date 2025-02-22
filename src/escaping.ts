@@ -1,4 +1,4 @@
-export function textAsAttribute(text: string): string {
+export function textAsAttributeValue(text: string): string {
   let encoded = text;
 
   encoded = encoded.replaceAll("\0", "\uFFFD");
@@ -25,11 +25,14 @@ export function textAsChildOfTag(text: string, tag?: string): string {
 
   if (tag == "script") {
     // This is safe if the type is JSON or JavaScript because the only
-    // location where this sequence can occur is in a string literal,
-    // where this will be valid and equivalent, or a comment.
+    // location where this sequence can occur is in a string or regex literal,
+    // where this will be valid and equivalent, or a comment... EXCEPT if this
+    // is inside of a tagged template literal and the tag function is something
+    // like String.raw which looks at the literal string including escape
+    // sequences. That case seems inherently unavoidable.
     encoded = encoded.replaceAll(
       /<\/script(?=[\t\n\f\r >\/]|$)/,
-      "<\/script",
+      "</\\u0073cript",
     );
 
     return encoded;
@@ -67,16 +70,16 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     encoded = encoded.replaceAll("<![CDATA[", "&lt;![CDATA[");
     encoded = encoded.replaceAll(
       /<\/title(?=[\t\n\f\r >\/]|$)/,
-      "\\3C\/title",
+      "&lt;/title",
     );
   } else if (tag == "textarea") {
     encoded = encoded.replaceAll("<![CDATA[", "&lt;![CDATA[");
     encoded = encoded.replaceAll(
       /<\/textarea(?=[\t\n\f\r >\/]|$)/,
-      "\\3C\/textarea",
+      "&lt;/textarea",
     );
   } else {
-    encoded = encoded.replaceAll("<", "&gt;");
+    encoded = encoded.replaceAll("<", "&lt;");
   }
 
   return encoded;

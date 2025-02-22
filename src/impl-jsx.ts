@@ -6,14 +6,14 @@
 
 import { unimplemented } from "jsr:@std/assert/unimplemented";
 
-import { Jsx } from "@jeb/jsx";
+import { JsxElement } from "@jeb/jsx";
 
 type Primitive = string | boolean | number | bigint | null | undefined;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {
   /** The type of JSX expressions. */
-  export type Element = Jsx;
+  export type Element = JsxElement;
 
   /** Intrinsic (native) tag names and attributes. */
   export type IntrinsicElements = {
@@ -25,7 +25,7 @@ export namespace JSX {
 
   /** Props/attributes shared by all instrinsic tags. */
   export type IntrinsicAttributes = {
-    children?: Jsx | string;
+    children?: Array<JsxElement | string>;
   };
 
   /** Class components must satisfy this type. */
@@ -34,18 +34,20 @@ export namespace JSX {
   /** Props/attributes shared by all class components satisfying T. */
   export type IntrinsicClassAttributes<T> = never;
 
-  type _ElementAttributesProperty = "default";
-  type _ElementChildrenAttribute = "default";
+  interface ElementChildrenAttribute {
+    // deno-lint-ignore ban-types
+    children: {};
+  }
 }
 
 export function jsx(
-  type: string | ((prop: Record<string | symbol, unknown>) => Jsx),
-  props: { children?: Jsx; [_: string | symbol]: unknown },
+  type: string | ((prop: Record<string | symbol, unknown>) => JsxElement),
+  props: { children?: JsxElement; [_: string | symbol]: unknown },
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
   _self?: unknown,
-): Jsx {
+): JsxElement {
   return jsxs(type, {
     ...props,
     children: props.children ? [props.children] : [],
@@ -53,23 +55,42 @@ export function jsx(
 }
 
 export function jsxs(
-  type: string | ((prop: Record<string | symbol, unknown>) => Jsx),
-  props: { children: Array<Jsx | string>; [_: string | symbol]: unknown },
+  type: string | ((prop: Record<string | symbol, unknown>) => JsxElement),
+  props: {
+    children: Array<JsxElement | string>;
+    [_: string | symbol]: unknown;
+  },
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
   _self?: unknown,
-): Jsx {
+): JsxElement {
   if (typeof type === "function") {
     return type(props);
   } else {
     const { children, ...propsWithoutChildren } = props;
-    return new Jsx(type, propsWithoutChildren as any, children ?? []);
+    return new JsxElement(
+      type,
+      propsWithoutChildren as any,
+      children?.flat(Infinity)?.flatMap(
+        (child): ReadonlyArray<string | JsxElement> => {
+          if (child instanceof JsxElement) {
+            return [child];
+          } else if (child === null || child === undefined) {
+            return [];
+          } else {
+            return [String(child)];
+          }
+        },
+      ) ?? [],
+    );
   }
 }
 
-export function Fragment(props: { children: Array<Jsx | string> }): Jsx {
-  return new Jsx(undefined, {}, props.children ?? []);
+export function Fragment(
+  props: { children: Array<JsxElement | string> },
+): JsxElement {
+  return new JsxElement(undefined, {}, props.children ?? []);
 }
 
 export const jsxDEV = jsx;
