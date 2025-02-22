@@ -10,6 +10,11 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true
   },
+  "lint": {
+    "rules": {
+      "exclude": ["require-await", "jsx-no-children-prop"]
+    }
+  },
   "imports": {
     "@jeb/jsx": "./src/mod.ts",
     "@jeb/jsx/jsx-runtime": "./src/impl-jsx.ts",
@@ -21,6 +26,7 @@
     "./jsx-dev-runtime": "./src/impl-jsx.ts"
   },
   "tasks": {
+    "example": "deno run --watch -A src/example.tsx",
     "test": "deno test",
     "deployctl": "deno run -A jsr:@deno/deployctl"
   },

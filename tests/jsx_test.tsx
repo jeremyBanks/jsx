@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert";
-import { JsxElement } from "@jeb/jsx";
+import { Element } from "../src/element.ts";
 
 const P = ({ children }: {
   children?: 2;

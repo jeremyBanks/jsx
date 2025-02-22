@@ -3,7 +3,7 @@ export function textAsAttributeValue(text: string): string {
 
   encoded = encoded.replaceAll("\0", "\uFFFD");
 
-  encoded = encoded.replace(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
+  encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
 
   if (encoded.length > 0 && !encoded.match(/[\t\n\f &>"'<=`]/)) {
     return encoded;
@@ -31,7 +31,7 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     // like String.raw which looks at the literal string including escape
     // sequences. That case seems inherently unavoidable.
     encoded = encoded.replaceAll(
-      /<\/script(?=[\t\n\f\r >\/]|$)/,
+      /<\/script(?=[\t\n\f\r >\/]|$)/ug,
       "</\\u0073cript",
     );
 
@@ -43,7 +43,7 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     // sequence can occur is in a string literal, where this will be valid
     // and equivalent, or a comment.
     encoded = encoded.replaceAll(
-      /<\/style(?=[\t\n\f\r >\/]|$)/,
+      /<\/style(?=[\t\n\f\r >\/]|$)/ug,
       "\\3C\/style",
     );
 
@@ -55,14 +55,14 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     encoded = encoded.replaceAll("<!--", "< !--");
     encoded = encoded.replaceAll("-->", "-- >");
     encoded = encoded.replaceAll("--!>", "-- !>");
-    encoded = encoded.replace(/^>/ug, " >");
-    encoded = encoded.replace(/^->/ug, "- >");
-    encoded = encoded.replace(/<!-$/ug, "< !-");
+    encoded = encoded.replaceAll(/^>/ug, " >");
+    encoded = encoded.replaceAll(/^->/ug, "- >");
+    encoded = encoded.replaceAll(/<!-$/ug, "< !-");
 
     return encoded;
   }
 
-  encoded = encoded.replace(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
+  encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
 
   encoded = encoded.replaceAll("]]>", "]]&gt;");
 

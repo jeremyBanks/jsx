@@ -6,14 +6,14 @@
 
 import { unimplemented } from "jsr:@std/assert/unimplemented";
 
-import { JsxElement } from "@jeb/jsx";
+import { Element } from "./element.ts";
 
 type Primitive = string | boolean | number | bigint | null | undefined;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {
   /** The type of JSX expressions. */
-  export type Element = JsxElement;
+  export type Element = Element;
 
   /** Intrinsic (native) tag names and attributes. */
   export type IntrinsicElements = {
@@ -25,7 +25,7 @@ export namespace JSX {
 
   /** Props/attributes shared by all instrinsic tags. */
   export type IntrinsicAttributes = {
-    children?: Array<JsxElement | string>;
+    children?: Array<Element | string>;
   };
 
   /** Class components must satisfy this type. */
@@ -41,13 +41,13 @@ export namespace JSX {
 }
 
 export function jsx(
-  type: string | ((prop: Record<string | symbol, unknown>) => JsxElement),
-  props: { children?: JsxElement; [_: string | symbol]: unknown },
+  type: string | ((prop: Record<string | symbol, unknown>) => Element),
+  props: { children?: Element; [_: string | symbol]: unknown },
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
   _self?: unknown,
-): JsxElement {
+): Element {
   return jsxs(type, {
     ...props,
     children: props.children ? [props.children] : [],
@@ -55,21 +55,21 @@ export function jsx(
 }
 
 export function jsxs(
-  type: string | ((prop: Record<string | symbol, unknown>) => JsxElement),
+  type: string | ((prop: Record<string | symbol, unknown>) => Element),
   props: {
-    children: Array<JsxElement | string>;
+    children: Array<Element | string>;
     [_: string | symbol]: unknown;
   },
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
   _self?: unknown,
-): JsxElement {
+): Element {
   if (typeof type === "function") {
     return type(props);
   } else {
     const { children, ...propsWithoutChildren } = props;
-    return new JsxElement(
+    return new Element(
       type,
       Object.fromEntries(
         Object.entries(propsWithoutChildren).flatMap(
@@ -87,8 +87,8 @@ export function jsxs(
         ),
       ),
       children?.flat(Infinity)?.flatMap(
-        (child): ReadonlyArray<string | JsxElement> => {
-          if (child instanceof JsxElement) {
+        (child): ReadonlyArray<string | Element> => {
+          if (child instanceof Element) {
             return [child];
           } else if (child === null || child === undefined) {
             return [];
@@ -102,9 +102,9 @@ export function jsxs(
 }
 
 export function Fragment(
-  props: { children: Array<JsxElement | string> },
-): JsxElement {
-  return new JsxElement(undefined, {}, props.children ?? []);
+  props: { children: Array<Element | string> },
+): Element {
+  return new Element(undefined, {}, props.children ?? []);
 }
 
 export const jsxDEV = jsx;
