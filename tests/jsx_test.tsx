@@ -26,7 +26,7 @@ Deno.test(function test() {
     </p>
   );
 
-  const _ourP = (
+  const ourP = (
     <>
       <P n={2}>
         hello world
@@ -47,5 +47,5 @@ Deno.test(function test() {
     </>
   );
 
-  assertEquals(instrinicP.toString(), "<b>hello, world!</b>");
+  assertEquals(ourP.toString(), "<b>hello, world!</b>");
 });

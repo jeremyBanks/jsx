@@ -4,7 +4,7 @@ export interface JsxStringOpts {
   previousComponents?: Array<string | ((prop: unknown) => unknown)>;
 }
 
-class Jsx {
+export class Jsx {
   constructor(
     readonly type: string | undefined,
     readonly attributes: Readonly<Record<string, string | true>>,
@@ -12,8 +12,8 @@ class Jsx {
   ) {}
 
   toString(opts?: JsxStringOpts): string {
-    return `<p>`;
+    return `<${this.type ?? ""}>${
+      this.children.map((child) => child.toString({ ...opts })).join("")
+    }</${this.type ?? ""}>`;
   }
 }
-
-export type { Jsx };

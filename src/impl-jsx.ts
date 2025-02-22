@@ -6,17 +6,12 @@
 
 import { unimplemented } from "jsr:@std/assert/unimplemented";
 
-import type { Jsx } from "@jeb/jsx";
+import { Jsx } from "@jeb/jsx";
 
 type Primitive = string | boolean | number | bigint | null | undefined;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {
-  /** Allowed JSX component/reciever types. */
-  // export type ElementType =
-  //   | keyof IntrinsicElements
-  //   | ((props: Record<string | number | symbol, unknown>) => Jsx | Primitive);
-
   /** The type of JSX expressions. */
   export type Element = Jsx;
 
@@ -44,8 +39,22 @@ export namespace JSX {
 }
 
 export function jsx(
-  type: string | ((prop: Record<string | symbol, unknown>) => string),
-  props: Record<string | symbol, unknown>,
+  type: string | ((prop: Record<string | symbol, unknown>) => Jsx),
+  props: { children?: Jsx; [_: string | symbol]: unknown },
+  _key?: unknown,
+  _isStaticChildren?: unknown,
+  _source?: unknown,
+  _self?: unknown,
+): Jsx {
+  return jsxs(type, {
+    ...props,
+    children: props.children ? [props.children] : [],
+  });
+}
+
+export function jsxs(
+  type: string | ((prop: Record<string | symbol, unknown>) => Jsx),
+  props: { children: Array<Jsx | string>; [_: string | symbol]: unknown },
   _key?: unknown,
   _isStaticChildren?: unknown,
   _source?: unknown,
@@ -54,12 +63,14 @@ export function jsx(
   if (typeof type === "function") {
     return type(props);
   } else {
-    return `<${type} />`;
+    const { children, ...propsWithoutChildren } = props;
+    return new Jsx(type, propsWithoutChildren as any, children ?? []);
   }
 }
 
-export const jsxs = jsx;
-export const jsxDEV = jsx;
-export const jsxsDEV = jsx;
+export function Fragment(props: { children: Array<Jsx | string> }): Jsx {
+  return new Jsx(undefined, {}, props.children ?? []);
+}
 
-export { Fragment } from "./model.tsx";
+export const jsxDEV = jsx;
+export const jsxsDEV = jsxs;
