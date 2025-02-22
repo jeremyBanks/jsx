@@ -1,5 +1,4 @@
 import { assertEquals } from "jsr:@std/assert";
-import { Element } from "../src/element.ts";
 
 const P = ({ children }: {
   children?: 2;

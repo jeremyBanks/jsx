@@ -10,13 +10,14 @@ Deno.serve(async (request: Request, info) => {
       width="100"
       height="100"
     >
-      <circle
-        cx="50"
-        cy="50"
-        r="40"
-        stroke="black"
-        stroke-width="3"
-        fill="red"
+      <rect
+        x="25"
+        y="25"
+        width="50"
+        height="50"
+        stroke="#123"
+        stroke-width="8"
+        fill="#FED"
       />
     </svg>
   );
@@ -25,6 +26,9 @@ Deno.serve(async (request: Request, info) => {
     case "/":
       return (<html>
         <head>
+          <title>
+            example page
+          </title>
           <style children="
             body {
               font-family: system-ui, sans-serif;

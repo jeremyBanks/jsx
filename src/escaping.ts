@@ -1,11 +1,17 @@
-export function textAsAttributeValue(text: string): string {
+export function textAsAttributeValue(
+  text: string,
+  grammar: "html" | "xml" | "unknown",
+): string {
   let encoded = text;
 
   encoded = encoded.replaceAll("\0", "\uFFFD");
 
   encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
 
-  if (encoded.length > 0 && !encoded.match(/[\t\n\f &>"'<=`]/)) {
+  if (
+    grammar === "html" && encoded.length > 0 &&
+    !encoded.match(/[\t\n\f &>"'<=`]/)
+  ) {
     return encoded;
   } else if (!encoded.includes('"')) {
     return `"${encoded}"`;
@@ -16,14 +22,18 @@ export function textAsAttributeValue(text: string): string {
   }
 }
 
-export function textAsChildOfTag(text: string, tag?: string): string {
+export function textAsTextNode(
+  text: string,
+  tag: string | undefined,
+  grammar: "html" | "xml" | "unknown",
+): string {
   tag = tag?.toLowerCase();
 
   let encoded = text;
 
   encoded = encoded.replaceAll("\0", "\uFFFD");
 
-  if (tag == "script") {
+  if (tag == "script" && grammar != "xml") {
     // This is safe if the type is JSON or JavaScript because the only
     // location where this sequence can occur is in a string or regex literal,
     // where this will be valid and equivalent, or a comment... EXCEPT if this
@@ -38,7 +48,7 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     return encoded;
   }
 
-  if (tag == "style") {
+  if (tag == "style" && grammar != "xml") {
     // This is safe if the type is CSS because the only location where this
     // sequence can occur is in a string literal, where this will be valid
     // and equivalent, or a comment.
@@ -58,7 +68,7 @@ export function textAsChildOfTag(text: string, tag?: string): string {
     encoded = encoded.replaceAll(/^>/ug, " >");
     encoded = encoded.replaceAll(/^->/ug, "- >");
     encoded = encoded.replaceAll(/<!-$/ug, "< !-");
-
+    
     return encoded;
   }
 
@@ -66,16 +76,16 @@ export function textAsChildOfTag(text: string, tag?: string): string {
 
   encoded = encoded.replaceAll("]]>", "]]&gt;");
 
-  if (tag == "title") {
+  if (tag == "title" && grammar == "html") {
     encoded = encoded.replaceAll("<![CDATA[", "&lt;![CDATA[");
     encoded = encoded.replaceAll(
-      /<\/title(?=[\t\n\f\r >\/]|$)/,
+      /<\/title(?=[\t\n\f\r >\/]|$)/ug,
       "&lt;/title",
     );
-  } else if (tag == "textarea") {
+  } else if (tag == "textarea" && grammar == "html") {
     encoded = encoded.replaceAll("<![CDATA[", "&lt;![CDATA[");
     encoded = encoded.replaceAll(
-      /<\/textarea(?=[\t\n\f\r >\/]|$)/,
+      /<\/textarea(?=[\t\n\f\r >\/]|$)/ug,
       "&lt;/textarea",
     );
   } else {

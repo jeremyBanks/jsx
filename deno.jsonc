@@ -1,6 +1,6 @@
 {
   "name": "@jeb/jsx",
-  "version": "0.0.20250216",
+  "version": "0.0.20250222",
   "compilerOptions": {
     "exactOptionalPropertyTypes": true,
     "jsx": "react-jsx",
@@ -12,7 +12,10 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["require-await", "jsx-no-children-prop"]
+      "exclude": [
+        "jsx-no-children-prop",
+        "require-await"
+      ]
     }
   },
   "imports": {
@@ -26,7 +29,7 @@
     "./jsx-dev-runtime": "./src/impl-jsx.ts"
   },
   "tasks": {
-    "example": "deno run --watch -A src/example.tsx",
+    "example": "deno run --allow-net src/example.tsx",
     "test": "deno test",
     "deployctl": "deno run -A jsr:@deno/deployctl"
   },

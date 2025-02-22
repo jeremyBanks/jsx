@@ -4,16 +4,16 @@
  * This isn't meant to be used directly, only through the JSX transform.
  */
 
-import { unimplemented } from "jsr:@std/assert/unimplemented";
-
-import { Element } from "./element.ts";
+import { Element } from "@jeb/jsx";
 
 type Primitive = string | boolean | number | bigint | null | undefined;
+
+type ElementType = Element;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {
   /** The type of JSX expressions. */
-  export type Element = Element;
+  export type Element = ElementType;
 
   /** Intrinsic (native) tag names and attributes. */
   export type IntrinsicElements = {
