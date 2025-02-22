@@ -71,7 +71,21 @@ export function jsxs(
     const { children, ...propsWithoutChildren } = props;
     return new JsxElement(
       type,
-      propsWithoutChildren as any,
+      Object.fromEntries(
+        Object.entries(propsWithoutChildren).flatMap(
+          ([key, value]) => {
+            if (value === true || typeof value === "string") {
+              return [[key, value]];
+            } else if (
+              value === undefined || value === null || value === false
+            ) {
+              return [];
+            } else {
+              return [[key, String(value)]];
+            }
+          },
+        ),
+      ),
       children?.flat(Infinity)?.flatMap(
         (child): ReadonlyArray<string | JsxElement> => {
           if (child instanceof JsxElement) {

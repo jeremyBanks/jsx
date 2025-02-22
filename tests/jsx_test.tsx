@@ -9,24 +9,6 @@ const P = ({ children }: {
 };
 
 Deno.test(function test() {
-  const _instrinicText = <b>hello, world!</b>;
-  const _fragmentText = <>hello,world!</>;
-
-  const instrinicP = (
-    <p
-      true
-      false={false}
-      number={2}
-      bigint={3n}
-      string="string"
-      null={null}
-      undefined={undefined}
-    >
-      {2}
-      {{ this: "is not type-checked I guess?" }}
-      <a href="/">Hello, world!</a>
-    </p>
-  );
   assertEquals(
     (
       <>
@@ -48,6 +30,28 @@ Deno.test(function test() {
         </P>
       </>
     ).toString(),
-    "<p>hello world</p><p>234<b s=string>test</b></p><p></p><p><p>a</p><p>b</p></p>",
+    `<p>hello world</p><p>234<b s=string>test</b></p><p></p><p><p>a</p><p>b</p></p>`,
+  );
+});
+
+Deno.test(function test() {
+  assertEquals(
+    (<p
+      true
+      false={false}
+      number={2}
+      bigint={3n}
+      string="string"
+      two-piece="one two three"
+      twos-piece="one's two's three"
+      two-pieces='ones "two" three'
+      null={null}
+      undefined={undefined}
+    >
+      {2}
+      {{ this: "is not type-checked I guess?" }}
+      <a href="/">Hello, world!</a>
+    </p>).toString(),
+    `<p true number=2 bigint=3 string=string two-piece="one two three" twos-piece="one's two's three" two-pieces='ones "two" three'>2[object Object]<a href=/>Hello, world!</a></p>`,
   );
 });
