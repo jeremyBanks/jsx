@@ -1,0 +1,22 @@
+export const snapshot = {};
+
+snapshot[`Example component - HTML container 1`] = `
+{
+  body: \`<!DOCTYPE html><meta charset=utf-8><title>Test Page</title><div class=example-root-div><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  & > * { filter: invert(1) hue-rotate(0.5turn);  & img, & video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><script>console.log("hello, world! >_<"'/\\\\");</script><div><h1>Hello, world!</h1><p style="font-style: italic;">This is an example of JSX in TypeScript.</p><script type=module>console.log("hello, ]]> world");</script><script type=module>console.log("hello, ]]> </\\\\u0073cript>");</script></div><div><svg viewBox="0 0 100 100" width=100 height=100><rect x=25 y=25 width=50 height=50 stroke=#123 stroke-width=8 fill=#FED></rect><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  & > * { filter: invert(1) hue-rotate(0.5turn);  & img, & video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><text x=50 y=50>hello, world!</text><foreignObject x=0 y=0 width=100 height=100><p xmlns=http://www.w3.org/1999/xhtml>This is<hr><b>html</b>.</p></foreignObject></svg></div><div><a href=https://validator.w3.org/nu/#textarea>validator</a> and <a href=https://validator.w3.org/#validate_by_input>validator</a></div></div>\`,
+  contentType: "text/html",
+}
+`;
+
+snapshot[`Example component - SVG container 1`] = `
+{
+  body: \`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100" height="100"><div class="example-root-div"><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  &amp; > * { filter: invert(1) hue-rotate(0.5turn);  &amp; img, &amp; video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><script>console.log("hello, world! >_&lt;"'/\\\\");</script><div><h1>Hello, world!</h1><p style="font-style: italic;">This is an example of JSX in TypeScript.</p><script type="module">console.log("hello, ]]> world");</script><script type="module">console.log("hello, ]]&gt; &lt;/script>");</script></div><div><svg viewBox="0 0 100 100" width="100" height="100"><rect x="25" y="25" width="50" height="50" stroke="#123" stroke-width="8" fill="#FED"/><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  &amp; > * { filter: invert(1) hue-rotate(0.5turn);  &amp; img, &amp; video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><text x="50" y="50">hello, world!</text><foreignObject x="0" y="0" width="100" height="100"><p xmlns="http://www.w3.org/1999/xhtml">This is<hr/><b>html</b>.</p></foreignObject></svg></div><div><a href="https://validator.w3.org/nu/#textarea">validator</a> and <a href="https://validator.w3.org/#validate_by_input">validator</a></div></div></foreignObject></svg>\`,
+  contentType: "image/svg+xml",
+}
+`;
+
+snapshot[`Example component - Independent 1`] = `
+{
+  body: \`<div class="example-root-div"><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  & > * { filter: invert(1) hue-rotate(0.5turn);  & img, & video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><script>console.log("hello, world! >_<"'/\\\\");</script><div><h1>Hello, world!</h1><p style="font-style: italic;">This is an example of JSX in TypeScript.</p><script type="module">console.log("hello, ]]> world");</script><script type="module">console.log("hello, ]]> </\\\\u0073cript>");</script></div><div><svg viewBox="0 0 100 100" width="100" height="100"><rect x="25" y="25" width="50" height="50" stroke="#123" stroke-width="8" fill="#FED"></rect><style> @media (prefers-color-scheme: dark) { :root { background-color: black;  & > * { filter: invert(1) hue-rotate(0.5turn);  & img, & video { filter: invert(1) hue-rotate(0.5turn); } } } } </style><text x="50" y="50">hello, world!</text><foreignObject x="0" y="0" width="100" height="100"><p xmlns="http://www.w3.org/1999/xhtml">This is<hr><b>html</b>.</p></foreignObject></svg></div><div><a href="https://validator.w3.org/nu/#textarea">validator</a> and <a href="https://validator.w3.org/#validate_by_input">validator</a></div></div>\`,
+  contentType: "text/plain",
+}
+`;

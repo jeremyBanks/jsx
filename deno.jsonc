@@ -13,6 +13,7 @@
   "lint": {
     "rules": {
       "exclude": [
+        "jsx-curly-braces",
         "jsx-no-children-prop",
         "jsx-no-unescaped-entities",
         "require-await"
@@ -31,7 +32,7 @@
   },
   "tasks": {
     "example": "deno run --allow-net example/serve.tsx",
-    "test": "deno test",
+    "test": "deno test --allow-read=. --allow-write=. example -- --update",
     "deployctl": "deno run -A jsr:@deno/deployctl"
   },
   "deploy": {

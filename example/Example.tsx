@@ -34,12 +34,14 @@ const Example = (_props: { children?: [] }): Element => (
   <div class="example-root-div">
     <AutoDarkMode />
 
+    <script>console.log("hello, world! {">_<\"'/\\"}");</script>
+
     <div>
       <h1>Hello, world!</h1>
       <p style="font-style: italic;">
         This is an example of JSX in TypeScript.
       </p>
-      <script type="module">console.log("hello, ]]> world");</script>
+      <script type="module">console.log("hello, ]]{">"} world");</script>
       <script type="module">{`console.log("hello, ]]> </script>");`}</script>
     </div>
     <div>
