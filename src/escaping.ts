@@ -6,7 +6,7 @@ export function textAsAttributeValue(
 
   encoded = encoded.replaceAll("\0", "\uFFFD");
 
-  encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
+  encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]|$)/ug, "&amp;");
 
   if (
     grammar === "html" && encoded.length > 0 &&
@@ -68,11 +68,15 @@ export function textAsTextNode(
     encoded = encoded.replaceAll(/^>/ug, " >");
     encoded = encoded.replaceAll(/^->/ug, "- >");
     encoded = encoded.replaceAll(/<!-$/ug, "< !-");
-    
+
     return encoded;
   }
 
-  encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]+;|[a-zA-Z0-9]*$)/ug, "&amp;");
+  if (grammar === "html") {
+    encoded = encoded.replaceAll(/&(?=[a-zA-Z0-9]|$)/ug, "&amp;");
+  } else {
+    encoded = encoded.replaceAll("&", "&amp;");
+  }
 
   encoded = encoded.replaceAll("]]>", "]]&gt;");
 

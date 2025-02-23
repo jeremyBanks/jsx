@@ -18,7 +18,7 @@ export class Element {
   toString(opts?: ElementStringOpts): string {
     const body = this.children.map((child) => {
       if (child instanceof Element) {
-        return child.toString({ ...opts });
+        return child.toString({ ...opts, rootAttributes: {} });
       } else if (typeof child === "string") {
         return textAsTextNode(child, this.type, opts?.grammar ?? "unknown");
       } else {
@@ -45,6 +45,10 @@ export class Element {
 
         buffer += name;
 
+        if (value === true && opts?.grammar !== "html") {
+          value = name;
+        }
+
         if (typeof value === "string") {
           buffer += `=${
             textAsAttributeValue(value, opts?.grammar ?? "unknown")
@@ -59,7 +63,7 @@ export class Element {
 
     const tagContents = this.children.map((child) => {
       if (child instanceof Element) {
-        return child.toString({ ...opts });
+        return child.toString({ ...opts, rootAttributes: {} });
       } else if (typeof child === "string") {
         return textAsTextNode(child, this.type, opts?.grammar ?? "unknown");
       } else {

@@ -1,26 +1,10 @@
+import Example, { Circle } from "./Example.tsx";
+
 Deno.serve(async (request: Request, info) => {
   console.log(info.remoteAddr.hostname, request.method, request.url);
 
   const url = new URL(request.url, "http://localhost");
   const path = url.pathname;
-
-  const circle = (
-    <svg
-      viewBox="0 0 100 100"
-      width="100"
-      height="100"
-    >
-      <rect
-        x="25"
-        y="25"
-        width="50"
-        height="50"
-        stroke="#123"
-        stroke-width="8"
-        fill="#FED"
-      />
-    </svg>
-  );
 
   switch (path) {
     case "/":
@@ -36,18 +20,18 @@ Deno.serve(async (request: Request, info) => {
           " />
         </head>
         <body>
-          <p>
-            Hello, {Math.random().toString(16).slice(2, 6)}!
-          </p>
+          <Example />
 
-          {circle}
+          <div>
+            <Circle>{2}{3}</Circle>
+          </div>
 
           <img src="/image.svg" />
         </body>
       </html>).toResponse();
 
     case "/image.svg":
-      return circle.toResponse();
+      return (<Circle />).toResponse();
 
     default:
       return new Response("404 not found", { status: 404 });
