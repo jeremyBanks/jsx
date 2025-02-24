@@ -1,3 +1,4 @@
+import HtmlInSvg from "../src/components/HtmlInSvg.tsx";
 import Example, { Circle } from "./Example.tsx";
 
 Deno.serve(async (request: Request, info) => {
@@ -27,8 +28,24 @@ Deno.serve(async (request: Request, info) => {
           </div>
 
           <img src="/image.svg" />
+
+          <img src="/example.svg" />
+
+          <svg width={512} height={512} style="border: 1px solid grey;">
+            <HtmlInSvg width={512} height={512}>
+              i'm html in svg?
+              <Example />
+            </HtmlInSvg>
+          </svg>
         </body>
       </html>).toResponse();
+
+    case "/example.svg":
+      return (<svg>
+        <HtmlInSvg>
+          <Example />
+        </HtmlInSvg>
+      </svg>).toResponse();
 
     case "/image.svg":
       return (<Circle />).toResponse();

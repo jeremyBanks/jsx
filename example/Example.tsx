@@ -1,9 +1,9 @@
 import type { Element } from "@jeb/jsx";
-import { AutoDarkMode } from "../src/components/AutoDarkMode.tsx";
+import CommonStyles from "./components/CommonStyles.tsx";
+import HtmlInSvg from "../src/components/HtmlInSvg.tsx";
 
 export const Circle = (_props: { children?: [] }): Element => (
   <svg
-    viewBox="0 0 100 100"
     width="100"
     height="100"
   >
@@ -16,7 +16,7 @@ export const Circle = (_props: { children?: [] }): Element => (
       stroke-width={8}
       fill="#FED"
     />
-    <AutoDarkMode />
+    <CommonStyles />
     <text x={50} y={50}>
       hello, world!
     </text>
@@ -32,14 +32,27 @@ export const Circle = (_props: { children?: [] }): Element => (
 
 const Example = (_props: { children?: [] }): Element => (
   <div class="example-root-div">
-    <AutoDarkMode />
-
-    <script>console.log("hello, world! {">_<\"'/\\"}");</script>
+    <CommonStyles />
+    <style children="
+      .example-content:after {
+        content: 'hello! <![CDATA[</style>]]>';
+      }
+    " />
+    <script type="module">
+      document.querySelector(".example-content").textContent = "hello, world!
+      {" "}
+      {">_<\\\"'/\\\\<![CDATA[</script>]]>"}
+      ";
+    </script>
 
     <div>
       <h1>Hello, world!</h1>
       <p style="font-style: italic;">
         This is an example of JSX in TypeScript.
+      </p>
+      <p>
+        {`<![CDATA[<script>]]>`}
+        <span class="example-content"></span>
       </p>
       <script type="module">console.log("hello, ]]{">"} world");</script>
       <script type="module">{`console.log("hello, ]]> </script>");`}</script>
